@@ -1,10 +1,13 @@
-from flask import Flask, request, Response
+from flask import current_app, Flask, Blueprint, request, Response
 import json
 import sqlite3
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)   
+    return app
 
-@app.route("/block", methods=["POST","GET"])
+app = create_app()
+@app.route("/block", methods=["POST","GET", "DELETE"])
 def block():
     data = request.get_json()
     data_dict = json.loads(data)
@@ -31,5 +34,13 @@ def block():
         result = cursor.execute("INSERT into block VALUES(?,?)", (amount, owner,))
         con.commit()
         return "Posted", 201
+    elif request.method == "DELETE":
+        # owner = data_dict.get('owner')
+        result = cursor.execute("DELETE from block where amount=?", (amount,))
+        con.commit()
+        return "Deleted", 200
     else:
         return "Don't do that", 400
+
+if __name__ == "main":
+    app = create_app()
