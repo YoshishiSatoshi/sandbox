@@ -9,3 +9,5 @@ Then you can run the tests with
 
 #TODO configuration(DB, URL, secrets)
 #TODO automated scripts for importing data
+#TODO project requirements file for development environment
+#TODO dockerize application
